@@ -1,0 +1,19 @@
+server:
+  port: 8080
+  servlet:
+    context-path: "/"
+
+logging:
+  level:
+    root: INFO
+    io:
+      jfo:
+        katmash: DEBUG
+
+katmash:
+  database:
+    host: "localhost"
+    port: 5432
+    schema: "katmash"
+    username: "katuser"
+    password: "katpass"
