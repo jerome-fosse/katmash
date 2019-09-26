@@ -1,0 +1,17 @@
+version: '3'
+services:
+  postgres:
+    image: "postgres:11.5"
+    container_name: "katmash-db"
+    environment:
+      - POSTGRES_USER=katuser
+      - POSTGRES_PASSWORD=katpass
+      - POSTGRES_DB=katmash
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./src/db/init:/docker-entrypoint-initdb.d
+      - katmash-data:/var/lib/postgresql/data
+
+volumes:
+  katmash-data:
