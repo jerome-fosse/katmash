@@ -2,17 +2,22 @@ package io.jfo.katmash.configuration
 
 import io.r2dbc.postgresql.PostgresqlConnectionConfiguration
 import io.r2dbc.postgresql.PostgresqlConnectionFactory
+import io.r2dbc.spi.ConnectionFactory
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.data.r2dbc.config.AbstractR2dbcConfiguration
+import org.springframework.data.r2dbc.connectionfactory.R2dbcTransactionManager
 import org.springframework.data.r2dbc.core.DatabaseClient
 import org.springframework.data.r2dbc.core.ReactiveDataAccessStrategy
 import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
+import org.springframework.transaction.ReactiveTransactionManager
+import org.springframework.transaction.annotation.EnableTransactionManagement
 
 @Configuration
 @EnableR2dbcRepositories
+@EnableTransactionManagement
 class DatabaseConfiguration(
         @Value("\${katmash.database.host:localhost}")
         val host: String,
@@ -37,5 +42,10 @@ class DatabaseConfiguration(
                         .database(database)
                         .build()
         )
+    }
+
+    @Bean
+    fun transactionManager(connectionFactory: ConnectionFactory): ReactiveTransactionManager {
+        return R2dbcTransactionManager(connectionFactory)
     }
 }

@@ -6,6 +6,7 @@ import io.jfo.katmash.exception.KatNotFoundException
 import io.jfo.katmash.exception.VoteException
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -44,6 +45,7 @@ class KatServiceImpl(private val katRepository: KatRepository): KatService {
                 .map { KatResponse(id = it.id, url = it.url, score = it.score) }
     }
 
+    @Transactional
     override fun voteForKatWithId(id: Int): Mono<Boolean> {
         logger.debug("voting for kat with id $id")
 
