@@ -18,4 +18,11 @@ class WebfluxConfiguration {
             GET("", handler::handleRequest)
         }
     }
+
+    @Bean
+    fun createVoteRouter(@Qualifier("voteHandler")handler: RequestHandler) = router {
+        ("/kat/{id}/vote").nest {
+            POST("", handler::handleRequest)
+        }
+    }
 }
