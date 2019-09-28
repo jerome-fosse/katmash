@@ -31,6 +31,10 @@ class KatServiceTest {
             return Mono.just(0)
         }
 
+        override fun findKatOrderByScoreDescLimitBy(limit: Long): Flux<Kat> {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
+
         override fun <S : Kat?> save(entity: S): Mono<S> {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }

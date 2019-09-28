@@ -26,6 +26,8 @@ interface KatService {
      * @throws VoteException if an error occurred during the vote
      */
     fun voteForKatWithId(id: Int): Mono<Boolean>
+
+    fun getBoardOftheTenFirstKats(): Flux<KatResponse>
 }
 
 @Component
@@ -57,4 +59,12 @@ class KatServiceImpl(private val katRepository: KatRepository): KatService {
                     }
                 }
     }
+
+    override fun getBoardOftheTenFirstKats(): Flux<KatResponse> {
+        logger.debug("getting the board of the 10 firts kats...")
+
+        return katRepository.findKatOrderByScoreDescLimitBy(10)
+                .map { KatResponse(id = it.id, url = it.url, score = it.score) }
+    }
+
 }

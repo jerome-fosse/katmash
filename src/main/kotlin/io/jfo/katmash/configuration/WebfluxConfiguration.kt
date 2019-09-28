@@ -13,9 +13,11 @@ import org.springframework.web.reactive.function.server.router
 class WebfluxConfiguration {
 
     @Bean
-    fun createKatPairRouter(@Qualifier("katPairHandler") handler: RequestHandler) = router {
-        ("/kats/pair" and accept(MediaType.APPLICATION_JSON)).nest {
-            GET("", handler::handleRequest)
+    fun createKatsRouter(@Qualifier("katPairHandler") pairHandler: RequestHandler,
+                         @Qualifier("boardHandler") boardHandler: RequestHandler) = router {
+        ("/kats" and accept(MediaType.APPLICATION_JSON)).nest {
+            GET("/pair", pairHandler::handleRequest)
+            GET("/board", boardHandler::handleRequest)
         }
     }
 

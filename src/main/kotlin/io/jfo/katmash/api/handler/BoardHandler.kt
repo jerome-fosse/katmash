@@ -8,26 +8,25 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
-import org.springframework.web.reactive.function.server.ServerResponse.*
 import reactor.core.publisher.Mono
 
 @Component
-class KatPairHandler(val katService: KatService): RequestHandler {
+class BoardHandler(val katService: KatService): RequestHandler {
 
     companion object {
-        val logger: Logger = LoggerFactory.getLogger(KatPairHandler::class.java)
+        val logger: Logger = LoggerFactory.getLogger(BoardHandler::class.java)
     }
 
     override fun handleRequest(request: ServerRequest): Mono<ServerResponse> {
-        logger.info("Requesting a pair of kats...")
+        logger.info("Requesting the board...")
 
-        return katService.getTwoRandomKats()
+        return katService.getBoardOftheTenFirstKats()
                 .collectList()
                 .flatMap {
-                    logger.debug("Pair of kats returned : $it")
-                    ok().contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromObject(it))
+                    logger.debug("The board kats are : $it")
+                    ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(BodyInserters.fromObject(it))
                 }
-                .doOnError {logger.error(it.message, it)}
-                .onErrorResume { badRequest().body(BodyInserters.fromObject("Something went wrong !!!")) }
+                .doOnError { KatPairHandler.logger.error(it.message, it)}
+                .onErrorResume { ServerResponse.badRequest().body(BodyInserters.fromObject("Something went wrong !!!")) }
     }
 }
