@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS cats;
 
-CREATE TABLE cats (
+CREATE TABLE kats (
     id    SERIAL PRIMARY KEY,
     url   TEXT NOT NULL,
     score INT  NOT NULL DEFAULT 0

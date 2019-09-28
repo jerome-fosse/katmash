@@ -1,0 +1,7 @@
+katmash:
+  database:
+    host: "localhost"
+    port: 5432
+    name: "katmashtest"
+    username: "test"
+    password: "test"
