@@ -2,10 +2,14 @@ package io.jfo.katmash.configuration
 
 import io.jfo.katmash.api.handler.RequestHandler
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ClassPathResource
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.config.EnableWebFlux
+import org.springframework.web.reactive.function.BodyInserters
+import org.springframework.web.reactive.function.BodyInserters.*
 import org.springframework.web.reactive.function.server.router
 
 @Configuration
@@ -26,5 +30,17 @@ class WebfluxConfiguration {
         ("/kat/{id}/vote").nest {
             POST("", handler::handleRequest)
         }
+    }
+
+    @Bean
+    fun createDefaultPageRouter() = router {
+        ("/").nest {
+            GET("") { ok().contentType(MediaType.TEXT_HTML).body(fromResource(ClassPathResource("/static/index.html"))) }
+        }
+    }
+
+    @Bean
+    fun createStaticResourcesRouter() = router {
+        resources("/**", ClassPathResource("/static/"))
     }
 }

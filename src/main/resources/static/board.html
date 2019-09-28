@@ -1,0 +1,90 @@
+<html>
+    <head>
+        <title>Katmash</title>
+        <style>
+            h1 {
+                font-size: 30px;
+                text-align: center;
+            }
+            h2 {
+                font-size: 20px;
+                text-align: center;
+            }
+            img.img-kat {
+                max-height: 150px;
+            }
+            table {
+                margin-left: auto;
+                margin-right: auto;
+                border-collapse: collapse;
+            }
+            table, th, td {
+                border: 1px solid black;
+            }
+            table thead th {
+                height: 50px
+            }
+            th, td {
+                padding: 5px;
+            }
+            td.pos {
+                width: 30px;
+            }
+            td.votes {
+                width: 50px;
+                text-align: center;
+            }
+        </style>
+        <script src="jquery-3.4.1.min.js"></script>
+        <script language="JavaScript">
+            $(document).ready(
+                function() {
+                    $.ajax({
+                        dataType: "json",
+                        type: "GET",
+                        url: "/kats/board",
+                        success: function (kats) {
+                            for (var i = 0; i < kats.length; i++) {
+                                var row = document.createElement("tr");
+                                var position = document.createElement("td");
+                                position.innerHTML = i + 1;
+                                position.className = "pos";
+                                row.append(position);
+
+                                var kat = document.createElement("td");
+                                kat.className = "kat";
+                                kat.innerHTML = "<img class='img-kat' src='" + kats[i].url + "'>";
+                                row.append(kat);
+
+                                var score = document.createElement("td");
+                                score.className = "votes";
+                                score.innerHTML = kats[i].score;
+                                row.append(score);
+
+                                $("#board").append(row);
+                            }
+                        },
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader("Accept", "Application/json")
+                        }
+                    });
+                }
+            )
+        </script>
+    </head>
+
+    <body>
+        <h1>Classement</h1>
+        <a href="/"><h2>retour votes</h2></a>
+        <p />
+        <table id="board">
+            <thead>
+                <tr>
+                    <th class="pos">#</th>
+                    <th class="kat">Chat</th>
+                    <th class="votes">Votes</th>
+                </tr>
+            </thead>
+        </table>
+    </body>
+</html>

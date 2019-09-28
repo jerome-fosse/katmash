@@ -1,0 +1,67 @@
+<html>
+    <head>
+        <title>Katmash</title>
+        <style>
+            h1 {
+                font-size: 30px;
+                text-align: center;
+            }
+            h2 {
+                font-size: 20px;
+                text-align: center;
+            }
+            div.panel-left {
+                width: 45%;
+                float: right;
+                margin: 0 auto;
+            }
+            div.panel-right {
+                width: 45%;
+                float: right;
+                margin: 0 auto;
+            }
+            img.img-kat {
+                max-width: 80%;
+            }
+        </style>
+        <script src="jquery-3.4.1.min.js"></script>
+        <script language="JavaScript">
+            $(document).ready(
+                function() {
+                    $.ajax({
+                        dataType: "json",
+                        type: "GET",
+                        url: "/kats/pair",
+                        success: function (pair) {
+                            $("#kat1").attr('src', pair[0].url);
+                            $("#kat1").click(function () {
+                                $.post({
+                                    url: "/kat/" + pair[0].id + "/vote",
+                                    success: function() {location.reload()}
+                                })
+                            });
+                            $("#kat2").attr('src', pair[1].url);
+                            $("#kat2").click(function () {
+                                $.post({
+                                    url: "/kat/" + pair[1].id + "/vote",
+                                    success: function() {location.reload()}
+                                })
+                            });
+                        },
+                        beforeSend: function(xhr) {
+                            xhr.setRequestHeader("Accept", "Application/json")
+                        }
+                    });
+                }
+            )
+        </script>
+    </head>
+
+    <body>
+        <h1>Quel chat est le plus mignon ?</h1>
+        <a href="board.html"><h2>Classement</h2></a>
+        <p />
+        <div class="panel-left"><img id="kat1" class="img-kat" src="" /></div>
+        <div class="panel-right"><img id="kat2" class="img-kat" src="" /></div>
+    </body>
+</html>
